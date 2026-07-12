@@ -8,7 +8,11 @@ export default function Dashboard() {
     const wsRef = useRef<WebSocket | null>(null);
 
     useEffect(() => {
-        const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:4000';
+        // Fallback to a production-looking URL if env var is missing and we're not on localhost
+        const isLocal = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+        const defaultWsUrl = isLocal ? 'ws://localhost:4000' : 'wss://api.dauntless.ops/stream';
+        const wsUrl = process.env.NEXT_PUBLIC_WS_URL || defaultWsUrl;
+        
         const ws = new WebSocket(wsUrl);
         wsRef.current = ws;
 
@@ -77,7 +81,7 @@ export default function Dashboard() {
                     <div className="h-[500px] bg-black p-6 overflow-y-auto font-mono text-sm text-emerald-500 terminal-scrollbar scanlines relative">
                         {logs.length === 0 ? (
                             <div className="flex items-center justify-center h-full text-gray-600 animate-pulse">
-                                Listening on {process.env.NEXT_PUBLIC_WS_URL || 'wss://localhost:4000'}...
+                                Listening on {typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? (process.env.NEXT_PUBLIC_WS_URL || 'wss://api.dauntless.ops/stream') : 'ws://localhost:4000'}...
                             </div>
                         ) : (
                             <div className="space-y-1 relative z-20 opacity-90 drop-shadow-[0_0_2px_rgba(16,185,129,0.5)]">
