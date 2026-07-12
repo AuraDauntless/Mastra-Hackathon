@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import InteractiveArchitecture from '@/components/InteractiveArchitecture';
 import { ShieldAlert, Zap, Lock, Database, ArrowRight, Terminal } from 'lucide-react';
 
 export default function LandingPage() {
@@ -8,6 +9,8 @@ export default function LandingPage() {
             {/* Ambient Background Glows */}
             <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-red-600/20 blur-[100px] rounded-full pointer-events-none animate-float -z-10" />
             <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/20 blur-[120px] rounded-full pointer-events-none animate-float-delayed -z-10" />
+
+
 
             {/* Hero Section */}
             <div className="space-y-6 max-w-5xl mx-auto mt-16 relative">
@@ -58,6 +61,17 @@ export default function LandingPage() {
                     <h3 className="text-2xl font-bold mb-4 text-white">Mastra Orchestration</h3>
                     <p className="text-gray-400 leading-relaxed text-lg">A non-linear graph engine perfectly manages the suspend/resume flow for the secure Human-in-the-Loop approval gate.</p>
                 </div>
+            </div>
+            
+            {/* 3D Interactive Architecture Section */}
+            <div className="w-full mt-32 z-10 relative">
+                <div className="text-center mb-16">
+                    <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6">Explore the Architecture</h2>
+                    <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+                        Interact with the high-level PRD of Dauntless Ops. See exactly how telemetry data flows through the LLM pipeline, vector database, and security proxy.
+                    </p>
+                </div>
+                <InteractiveArchitecture />
             </div>
 
         </div>

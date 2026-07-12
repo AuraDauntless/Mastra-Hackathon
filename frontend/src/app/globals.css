@@ -12,6 +12,23 @@ body {
   overflow-x: hidden;
 }
 
+/* Global Scrollbar Theme */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #030014;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #8b5cf6, #3b82f6);
+  border-radius: 10px;
+  border: 2px solid #030014;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #a855f7, #60a5fa);
+}
+
 /* Custom Scrollbar for Hacker Terminal */
 .terminal-scrollbar::-webkit-scrollbar {
   width: 8px;
@@ -105,4 +122,24 @@ body {
 }
 .animate-float-delayed {
   animation: float 6s ease-in-out 3s infinite;
+}
+
+@keyframes flow {
+  from { stroke-dashoffset: 32; }
+  to { stroke-dashoffset: 0; }
+}
+
+.animate-flow {
+  animation: flow 1s linear infinite;
+}
+
+@keyframes double-roll-jump {
+  0% { transform: translateY(0) rotateX(0deg); }
+  40% { transform: translateY(-150px) rotateX(360deg); }
+  60% { transform: translateY(-150px) rotateX(360deg) scale(1.1); }
+  100% { transform: translateY(0) rotateX(720deg) scale(1); }
+}
+
+.animate-double-roll-jump {
+  animation: double-roll-jump 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }

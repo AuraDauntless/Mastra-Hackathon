@@ -6,11 +6,23 @@ export default function DeveloperHub() {
     const [apiKey, setApiKey] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
 
-    const generateKey = () => {
-        // Random secure-looking key generator
-        const randomHex = [...Array(32)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
-        setApiKey(`dauntless_live_${randomHex}`);
-        setCopied(false);
+    const generateKey = async () => {
+        try {
+            const res = await fetch('/api/keys', { method: 'POST' });
+            
+            if (res.status === 401) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            const data = await res.json();
+            if (data.key) {
+                setApiKey(data.key);
+                setCopied(false);
+            }
+        } catch (error) {
+            console.error('Failed to generate key', error);
+        }
     };
 
     const copyToClipboard = () => {
@@ -78,13 +90,6 @@ export default function DeveloperHub() {
                         <div className="bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 h-full rounded-full w-1/4 relative">
                             <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
                         </div>
-                    </div>
-                    
-                    {/* Mock Heatmap */}
-                    <div className="mt-8 grid grid-cols-10 gap-1 opacity-50">
-                        {[...Array(30)].map((_, i) => (
-                            <div key={i} className={`h-2 rounded-sm ${(i % 7 === 0 || i % 11 === 0) ? 'bg-purple-500' : (i % 3 === 0 || i % 5 === 0) ? 'bg-blue-500' : 'bg-gray-800'}`}></div>
-                        ))}
                     </div>
                 </div>
 
