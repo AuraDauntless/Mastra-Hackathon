@@ -177,7 +177,7 @@ export default function InteractiveArchitecture() {
                 <Network className="text-purple-500" />
                 System Architecture
             </h2>
-            <p className="text-gray-400 mt-1">{isFullscreen ? 'Drag nodes to reposition. Click a node for details.' : 'Click any node to expand, or Launch Arena to explore freely.'}</p>
+
         </div>
         {!activeNode && (
             <button 
