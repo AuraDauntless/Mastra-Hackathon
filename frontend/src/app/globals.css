@@ -1,26 +1,108 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #030014;
+  --foreground: #ededed;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar for Hacker Terminal */
+.terminal-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.terminal-scrollbar::-webkit-scrollbar-track {
+  background: #000000;
+}
+.terminal-scrollbar::-webkit-scrollbar-thumb {
+  background: #10B981; /* Emerald 500 */
+  border-radius: 4px;
+}
+.terminal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #34D399; /* Emerald 400 */
+}
+
+/* Scanline Effect */
+.scanlines {
+  position: relative;
+  overflow: hidden;
+}
+.scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 10;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+
+/* Mesh Background */
+.bg-mesh {
+  background-color: #030014;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+    radial-gradient(at 50% 0%, hsla(225,39%,30%,0.2) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(339,49%,30%,0.2) 0, transparent 50%);
+}
+
+/* Grid Pattern Background */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+/* Animated Border Glow */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin 8s linear infinite;
+}
+
+@keyframes pulse-border-amber {
+  0% { border-color: rgba(245, 158, 11, 0.2); box-shadow: 0 0 10px rgba(245, 158, 11, 0.1); }
+  50% { border-color: rgba(245, 158, 11, 0.8); box-shadow: 0 0 25px rgba(245, 158, 11, 0.4); }
+  100% { border-color: rgba(245, 158, 11, 0.2); box-shadow: 0 0 10px rgba(245, 158, 11, 0.1); }
+}
+.border-glow-amber {
+  animation: pulse-border-amber 2s infinite;
+}
+
+@keyframes pulse-border-emerald {
+  0% { border-color: rgba(16, 185, 129, 0.2); box-shadow: 0 0 10px rgba(16, 185, 129, 0.1); }
+  50% { border-color: rgba(16, 185, 129, 1); box-shadow: 0 0 35px rgba(16, 185, 129, 0.6); }
+  100% { border-color: rgba(16, 185, 129, 0.2); box-shadow: 0 0 10px rgba(16, 185, 129, 0.1); }
+}
+.border-glow-emerald {
+  animation: pulse-border-emerald 2s infinite;
+}
+
+/* Floating Animation */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+.animate-float-delayed {
+  animation: float 6s ease-in-out 3s infinite;
 }

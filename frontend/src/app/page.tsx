@@ -1,110 +1,65 @@
-"use client";
-import { useEffect, useRef } from 'react';
-import { useStore } from '../store/useStore';
-import { ShieldAlert, CheckCircle, Activity, Play } from 'lucide-react';
+import Link from 'next/link';
+import { ShieldAlert, Zap, Lock, Database, ArrowRight, Terminal } from 'lucide-react';
 
-export default function Dashboard() {
-    const { logs, proposedPlan, status, addLog, setProposedPlan, setStatus } = useStore();
-    const wsRef = useRef<WebSocket | null>(null);
-
-    useEffect(() => {
-        const ws = new WebSocket('ws://localhost:4000');
-        wsRef.current = ws;
-
-        ws.onmessage = (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                if (data.type === 'INCIDENT_PLAN') {
-                    setProposedPlan(data.data);
-                    setStatus('PENDING_APPROVAL');
-                } else if (data.type === 'ERROR') {
-                    addLog('ERROR: ' + data.message);
-                }
-            } catch(e) {
-                // If it's a raw string log from our ingest
-                addLog(event.data);
-            }
-        };
-
-        return () => ws.close();
-    }, [addLog, setProposedPlan, setStatus]);
-
-    const handleApprove = async () => {
-        setStatus('RESOLVED');
-        try {
-            await fetch('http://localhost:4000/api/approve', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    // Fake JWT for MVP demo since we mocked the login endpoint
-                    'Authorization': 'Bearer test' 
-                },
-                body: JSON.stringify({ runId: 'test', command: proposedPlan?.remediationCommand })
-            });
-            alert('Action Approved! Post-Mortem generated on Backend.');
-        } catch(e) {
-            console.error('Failed to approve', e);
-        }
-    };
-
+export default function LandingPage() {
     return (
-        <div className="min-h-screen bg-gray-900 text-white p-8">
-            <h1 className="text-3xl font-bold mb-8 flex items-center gap-3">
-                <ShieldAlert className="text-red-500" /> Dauntless Ops HITL Dashboard
-            </h1>
+        <div className="flex flex-col items-center justify-center min-h-[85vh] text-center space-y-16 py-12 px-4 max-w-7xl mx-auto relative z-10">
+            
+            {/* Ambient Background Glows */}
+            <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-red-600/20 blur-[100px] rounded-full pointer-events-none animate-float -z-10" />
+            <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/20 blur-[120px] rounded-full pointer-events-none animate-float-delayed -z-10" />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Telemetry Stream */}
-                <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-xl">
-                    <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                        <Activity className="text-blue-400" /> Live Telemetry
-                    </h2>
-                    <div className="h-96 bg-black rounded p-4 overflow-y-auto font-mono text-sm text-green-400">
-                        {logs.length === 0 ? "Listening on wss://localhost:4000..." : logs.map((l, i) => <div key={i}>{l}</div>)}
-                    </div>
+            {/* Hero Section */}
+            <div className="space-y-6 max-w-5xl mx-auto mt-16 relative">
+                <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-purple-900/20 text-purple-300 border border-purple-500/30 text-sm font-semibold mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+                    <Zap size={16} className="text-yellow-400" /> Welcome to the Future of Incident Response
                 </div>
-
-                {/* AI Proposed Plan */}
-                <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-xl">
-                    <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                        <CheckCircle className="text-purple-400" /> Enkrypt-Validated Plan
-                    </h2>
-                    
-                    {status === 'PENDING_APPROVAL' && proposedPlan ? (
-                        <div className="space-y-4">
-                            <div className="bg-gray-700 p-4 rounded">
-                                <h3 className="text-gray-400 text-sm uppercase tracking-wide">Root Cause Analysis</h3>
-                                <p className="font-semibold text-lg mt-1">{proposedPlan.rootCause}</p>
-                            </div>
-                            
-                            <div className="bg-gray-700 p-4 rounded border border-gray-600">
-                                <h3 className="text-gray-400 text-sm uppercase tracking-wide">Proposed Remediation Command</h3>
-                                <code className="block mt-2 bg-black p-3 text-red-400 rounded border border-red-900/50">
-                                    &gt; {proposedPlan.remediationCommand}
-                                </code>
-                            </div>
-
-                            <div className="flex items-center gap-2 mt-4 p-3 bg-green-900/30 text-green-400 rounded border border-green-900/50">
-                                <ShieldAlert size={18} /> Safety Check: {proposedPlan.safe ? "PASSED (No destructive commands detected)" : "FAILED"}
-                            </div>
-
-                            <button onClick={handleApprove} className="w-full mt-6 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded flex justify-center items-center gap-2 transition-all">
-                                <Play size={18} /> Approve & Execute
-                            </button>
+                <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight drop-shadow-2xl">
+                    Zero-Trust AI for <br/>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 animate-pulse">Site Reliability</span>.
+                </h1>
+                <p className="text-2xl text-gray-300 max-w-3xl mx-auto pt-6 leading-relaxed font-light">
+                    Dauntless Ops acts as your autonomous SRE. It ingests live telemetry, synthesizes remediation commands using Mastra, and halts at a strict Human-in-the-Loop gate.
+                </p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12">
+                    <Link href="/dashboard" className="w-full sm:w-auto relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-red-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                        <div className="relative flex items-center justify-center gap-2 bg-black hover:bg-gray-900 text-white font-bold py-5 px-10 rounded-lg transition-all border border-gray-800">
+                            <Terminal size={22} className="text-purple-400" /> Launch NOC Dashboard
                         </div>
-                    ) : status === 'RESOLVED' ? (
-                        <div className="h-full flex flex-col items-center justify-center text-gray-400">
-                            <CheckCircle size={64} className="text-green-500 mb-4" />
-                            <p className="text-xl text-white">Incident Resolved</p>
-                            <p>Post-Mortem auto-generated and stored in Qdrant.</p>
-                        </div>
-                    ) : (
-                        <div className="h-full flex items-center justify-center text-gray-500 border-2 border-dashed border-gray-700 rounded-lg">
-                            Waiting for anomalies...
-                        </div>
-                    )}
+                    </Link>
+                    <Link href="/developer" className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white font-bold py-5 px-10 rounded-lg border border-white/10 backdrop-blur-md transition-all">
+                        Get API Keys <ArrowRight size={20} className="text-gray-400" />
+                    </Link>
                 </div>
             </div>
+
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mt-32 text-left relative z-10">
+                <div className="bg-gray-950/40 backdrop-blur-xl border border-white/10 p-10 rounded-3xl hover:border-blue-500/50 transition-all duration-300 shadow-2xl hover:-translate-y-2 group">
+                    <div className="bg-blue-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform border border-blue-500/20">
+                        <Database className="text-blue-400" size={32} />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-white">Qdrant Memory RAG</h3>
+                    <p className="text-gray-400 leading-relaxed text-lg">Instantly searches through past resolved incidents via vector similarity to guarantee the LLM never hallucinates a command.</p>
+                </div>
+                <div className="bg-gray-950/40 backdrop-blur-xl border border-white/10 p-10 rounded-3xl hover:border-red-500/50 transition-all duration-300 shadow-2xl hover:-translate-y-2 group relative overflow-hidden">
+                    <div className="absolute -right-20 -top-20 w-40 h-40 bg-red-600/20 blur-3xl rounded-full"></div>
+                    <div className="bg-red-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform border border-red-500/20">
+                        <Lock className="text-red-400" size={32} />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-white">Enkrypt AI Zero-Trust</h3>
+                    <p className="text-gray-400 leading-relaxed text-lg">All proposed CLI commands are intercepted by the Enkrypt proxy. Destructive payloads like `rm -rf` are immediately blocked.</p>
+                </div>
+                <div className="bg-gray-950/40 backdrop-blur-xl border border-white/10 p-10 rounded-3xl hover:border-green-500/50 transition-all duration-300 shadow-2xl hover:-translate-y-2 group">
+                    <div className="bg-green-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform border border-green-500/20">
+                        <ShieldAlert className="text-green-400" size={32} />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-white">Mastra Orchestration</h3>
+                    <p className="text-gray-400 leading-relaxed text-lg">A non-linear graph engine perfectly manages the suspend/resume flow for the secure Human-in-the-Loop approval gate.</p>
+                </div>
+            </div>
+
         </div>
     );
 }
