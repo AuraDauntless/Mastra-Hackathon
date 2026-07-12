@@ -18,11 +18,11 @@ export default function LandingPage() {
                     <Zap size={16} className="text-yellow-400" /> Welcome to the Future of Incident Response
                 </div>
                 <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight drop-shadow-2xl">
-                    Zero-Trust AI for <br/>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 animate-pulse">Site Reliability</span>.
+                    AI That Fixes Your <br/>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 animate-pulse">Servers, Safely</span>.
                 </h1>
                 <p className="text-2xl text-gray-300 max-w-3xl mx-auto pt-6 leading-relaxed font-light">
-                    Dauntless Ops acts as your autonomous SRE. It ingests live telemetry, synthesizes remediation commands using Mastra, and halts at a strict Human-in-the-Loop gate.
+                    When your website goes down, our AI figures out exactly what went wrong and suggests the perfect command to fix it. Best of all, it never runs anything without your explicit approval.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12">
                     <Link href="/dashboard" className="w-full sm:w-auto relative group">
@@ -43,32 +43,32 @@ export default function LandingPage() {
                     <div className="bg-blue-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform border border-blue-500/20">
                         <Database className="text-blue-400" size={32} />
                     </div>
-                    <h3 className="text-2xl font-bold mb-4 text-white">Qdrant Memory RAG</h3>
-                    <p className="text-gray-400 leading-relaxed text-lg">Instantly searches through past resolved incidents via vector similarity to guarantee the LLM never hallucinates a command.</p>
+                    <h3 className="text-2xl font-bold mb-4 text-white">Learns From Past Mistakes</h3>
+                    <p className="text-gray-400 leading-relaxed text-lg">It remembers every problem you've ever had. Instead of guessing, it looks at how you fixed things in the past to give you the perfect solution.</p>
                 </div>
                 <div className="bg-gray-950/40 backdrop-blur-xl border border-white/10 p-10 rounded-3xl hover:border-red-500/50 transition-all duration-300 shadow-2xl hover:-translate-y-2 group relative overflow-hidden">
                     <div className="absolute -right-20 -top-20 w-40 h-40 bg-red-600/20 blur-3xl rounded-full"></div>
                     <div className="bg-red-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform border border-red-500/20">
                         <Lock className="text-red-400" size={32} />
                     </div>
-                    <h3 className="text-2xl font-bold mb-4 text-white">Enkrypt AI Zero-Trust</h3>
-                    <p className="text-gray-400 leading-relaxed text-lg">All proposed CLI commands are intercepted by the Enkrypt proxy. Destructive payloads like `rm -rf` are immediately blocked.</p>
+                    <h3 className="text-2xl font-bold mb-4 text-white">Bulletproof Security</h3>
+                    <p className="text-gray-400 leading-relaxed text-lg">Our security layer blocks the AI from making any dangerous mistakes. If it tries to delete something important, we stop it instantly.</p>
                 </div>
                 <div className="bg-gray-950/40 backdrop-blur-xl border border-white/10 p-10 rounded-3xl hover:border-green-500/50 transition-all duration-300 shadow-2xl hover:-translate-y-2 group">
                     <div className="bg-green-500/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform border border-green-500/20">
                         <ShieldAlert className="text-green-400" size={32} />
                     </div>
-                    <h3 className="text-2xl font-bold mb-4 text-white">Mastra Orchestration</h3>
-                    <p className="text-gray-400 leading-relaxed text-lg">A non-linear graph engine perfectly manages the suspend/resume flow for the secure Human-in-the-Loop approval gate.</p>
+                    <h3 className="text-2xl font-bold mb-4 text-white">You're Always The Boss</h3>
+                    <p className="text-gray-400 leading-relaxed text-lg">The AI pauses exactly when it needs to. It prepares the solution, but waits patiently for you to click "Approve" before touching your servers.</p>
                 </div>
             </div>
             
             {/* 3D Interactive Architecture Section */}
             <div className="w-full mt-32 z-10 relative">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6">Explore the Architecture</h2>
+                    <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6">Explore How It Works</h2>
                     <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                        Interact with the high-level PRD of Dauntless Ops. See exactly how telemetry data flows through the LLM pipeline, vector database, and security proxy.
+                        Interact with our visual map. See exactly how the AI takes error reports, checks past memory, and safely prepares a fix for you to approve.
                     </p>
                 </div>
                 <InteractiveArchitecture />
