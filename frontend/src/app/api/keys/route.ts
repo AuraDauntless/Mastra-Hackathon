@@ -24,7 +24,7 @@ export async function POST(req: Request) {
             data: {
                 keyHash: rawKey,
                 name: 'Production Telemetry Key',
-                userId: session.user.id
+                userId: (session.user as any).id
             }
         });
 
