@@ -10,38 +10,36 @@ export default function Dashboard() {
 
     useEffect(() => {
         const isLocal = window.location.hostname === 'localhost';
-        const defaultWsUrl = isLocal ? 'ws://localhost:4000' : 'wss://api.dauntless.ops/stream';
+        const defaultWsUrl = isLocal ? 'ws://localhost:4000' : 'wss://mastra-hackathon.onrender.com';
         const wsUrl = process.env.NEXT_PUBLIC_WS_URL || defaultWsUrl;
         
         setDisplayUrl(wsUrl);
         
-        // Don't attempt to connect if it's our fake presentation mock URL to prevent red console errors
-        if (wsUrl !== 'wss://api.dauntless.ops/stream') {
-            const ws = new WebSocket(wsUrl);
-            wsRef.current = ws;
+        // Connect to the real backend
+        const ws = new WebSocket(wsUrl);
+        wsRef.current = ws;
 
-            ws.onmessage = (event) => {
-                try {
-                    const data = JSON.parse(event.data);
-                    if (data.type === 'INCIDENT_PLAN') {
-                        setProposedPlan(data.data);
-                        setStatus('PENDING_APPROVAL');
-                    } else if (data.type === 'ERROR') {
-                        addLog('ERROR: ' + data.message);
-                    }
-                } catch(e) {
-                    addLog(event.data);
+        ws.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.type === 'INCIDENT_PLAN') {
+                    setProposedPlan(data.data);
+                    setStatus('PENDING_APPROVAL');
+                } else if (data.type === 'ERROR') {
+                    addLog('ERROR: ' + data.message);
                 }
-            };
+            } catch(e) {
+                addLog(event.data);
+            }
+        };
 
-            return () => ws.close();
-        }
+        return () => ws.close();
     }, [addLog, setProposedPlan, setStatus]);
 
     const handleApprove = async () => {
         setStatus('RESOLVED');
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:4000' : 'https://mastra-hackathon.onrender.com');
             await fetch(`${apiUrl}/api/approve`, {
                 method: 'POST',
                 headers: { 
