@@ -14,25 +14,28 @@ export default function Dashboard() {
         const wsUrl = process.env.NEXT_PUBLIC_WS_URL || defaultWsUrl;
         
         setDisplayUrl(wsUrl);
-        const ws = new WebSocket(wsUrl);
-        wsRef.current = ws;
+        
+        // Don't attempt to connect if it's our fake presentation mock URL to prevent red console errors
+        if (wsUrl !== 'wss://api.dauntless.ops/stream') {
+            const ws = new WebSocket(wsUrl);
+            wsRef.current = ws;
 
-        ws.onmessage = (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                if (data.type === 'INCIDENT_PLAN') {
-                    setProposedPlan(data.data);
-                    setStatus('PENDING_APPROVAL');
-                } else if (data.type === 'ERROR') {
-                    addLog('ERROR: ' + data.message);
+            ws.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    if (data.type === 'INCIDENT_PLAN') {
+                        setProposedPlan(data.data);
+                        setStatus('PENDING_APPROVAL');
+                    } else if (data.type === 'ERROR') {
+                        addLog('ERROR: ' + data.message);
+                    }
+                } catch(e) {
+                    addLog(event.data);
                 }
-            } catch(e) {
-                // If it's a raw string log from our ingest
-                addLog(event.data);
-            }
-        };
+            };
 
-        return () => ws.close();
+            return () => ws.close();
+        }
     }, [addLog, setProposedPlan, setStatus]);
 
     const handleApprove = async () => {
