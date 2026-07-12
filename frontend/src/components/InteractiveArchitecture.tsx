@@ -277,7 +277,7 @@ export default function InteractiveArchitecture() {
                   </button>
                   <div className="flex flex-col items-center text-center space-y-8">
                       <div className={`p-8 rounded-full border-2 ${colorMap[activeNode.color].bg} ${colorMap[activeNode.color].icon} border-white/10`}>
-                          {React.cloneElement(activeNode.icon as React.ReactElement, { size: 64, width: 64, height: 64 })}
+                          {React.cloneElement(activeNode.icon as React.ReactElement, { size: 64, width: 64, height: 64 } as any)}
                       </div>
                       <div>
                           <h3 className="text-5xl font-extrabold text-white mb-4">{activeNode.label}</h3>
