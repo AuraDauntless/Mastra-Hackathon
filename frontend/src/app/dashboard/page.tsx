@@ -8,7 +8,8 @@ export default function Dashboard() {
     const wsRef = useRef<WebSocket | null>(null);
 
     useEffect(() => {
-        const ws = new WebSocket('ws://localhost:4000');
+        const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:4000';
+        const ws = new WebSocket(wsUrl);
         wsRef.current = ws;
 
         ws.onmessage = (event) => {
@@ -32,7 +33,8 @@ export default function Dashboard() {
     const handleApprove = async () => {
         setStatus('RESOLVED');
         try {
-            await fetch('http://localhost:4000/api/approve', {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+            await fetch(`${apiUrl}/api/approve`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -75,7 +77,7 @@ export default function Dashboard() {
                     <div className="h-[500px] bg-black p-6 overflow-y-auto font-mono text-sm text-emerald-500 terminal-scrollbar scanlines relative">
                         {logs.length === 0 ? (
                             <div className="flex items-center justify-center h-full text-gray-600 animate-pulse">
-                                Listening on wss://localhost:4000...
+                                Listening on {process.env.NEXT_PUBLIC_WS_URL || 'wss://localhost:4000'}...
                             </div>
                         ) : (
                             <div className="space-y-1 relative z-20 opacity-90 drop-shadow-[0_0_2px_rgba(16,185,129,0.5)]">
